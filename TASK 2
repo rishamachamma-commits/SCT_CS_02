@@ -1,0 +1,56 @@
+from PIL import Image
+
+def encrypt_image(image_path, key):
+    img = Image.open(image_path)
+    pixels = img.load()
+
+    width, height = img.size
+
+    for i in range(width):
+        for j in range(height):
+            r, g, b = pixels[i, j]
+
+            r = (r + key) % 256
+            g = (g + key) % 256
+            b = (b + key) % 256
+
+            pixels[i, j] = (r, g, b)
+
+    img.save("encrypted_image.png")
+    print("Image Encrypted Successfully ✅")
+
+
+
+def decrypt_image(image_path, key):
+    img = Image.open(image_path)
+    pixels = img.load()
+
+    width, height = img.size
+
+    for i in range(width):
+        for j in range(height):
+            r, g, b = pixels[i, j]
+
+            r = (r - key) % 256
+            g = (g - key) % 256
+            b = (b - key) % 256
+
+            pixels[i, j] = (r, g, b)
+
+    img.save("decrypted_image.png")
+    print("Image Decrypted Successfully ✅")
+
+
+print("=== Image Encryption Tool ===")
+
+choice = input("Enter E to Encrypt or D to Decrypt: ").upper()
+key = int(input("Enter Secret Key: "))
+
+if choice == "E":
+    encrypt_image(r"C:\Users\Risha\PyCharmProjects\PythonProject\photo.jpg", key)
+
+elif choice == "D":
+    decrypt_image("encrypted_image.png", key)
+
+else:
+    print("Invalid Choice")
